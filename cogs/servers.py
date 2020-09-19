@@ -44,7 +44,7 @@ class Servers(commands.Cog):
             emb.title = f'**{ctx.guild.name}**\n┏╋━━◥◣◆◢◤━━╋┓'
             emb.add_field(name = '__Proprietario__', value = str(ctx.guild.owner), inline = False)
 
-            admins = [str(member) for member in ctx.guild.members if member.guild_permissions.administrator and not member.bot]
+            admins = [str(member) for member in ctx.guild.members if member.guild_permissions.administrator and not member.bot and member.id != ctx.guild.owner.id]
 
             emb.add_field(name = '__Amministratori__', value = "\n".join(admins), inline = False)
             emb.add_field(name = "__Data di Fondazione__", value = ctx.guild.created_at.strftime("%d %B %Y"), inline = False)
