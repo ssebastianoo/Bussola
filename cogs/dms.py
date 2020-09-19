@@ -18,12 +18,18 @@ class DMS(commands.Cog):
             if str(message.author.id) in [g.topic for g in category.channels]:
                 channel = discord.utils.get(category.channels, topic = str(message.author.id))
                 emb = discord.Embed(description = f"**{message.author}**: {message.content}", colour = 0x2F3136)
+                if message.attachments:
+                    if message.attachments[0].filename.endswith(("png", "jpg", "jpeg", "webp", "gif")):
+                        emb.set_image(url = message.attachments[0].url)
                 await channel.send(embed = emb)
 
             else:
                 channel = await guild.create_text_channel(name = str(message.author), category = category, topic = message.author.id, sync_permissions = True)
                 await message.channel.send("Il tuo messaggio è stato inoltrato allo staff, attendi una risposta.")
                 emb = discord.Embed(description = f"**{message.author}**: {message.content}", colour = 0x2F3136)
+                if message.attachments:
+                    if message.attachments[0].filename.endswith(("png", "jpg", "jpeg", "webp", "gif")):
+                        emb.set_image(url = message.attachments[0].url)
                 await channel.send(embed = emb)
 
         elif message.guild == guild:
@@ -34,6 +40,9 @@ class DMS(commands.Cog):
 
                 else:
                     emb = discord.Embed(description = f"**{message.author}**: {message.content}", colour = 0x2F3136)
+                    if message.attachments:
+                        if message.attachments[0].filename.endswith(("png", "jpg", "jpeg", "webp", "gif")):
+                            emb.set_image(url = message.attachments[0].url)
                     await user.send(embed = emb)
 
 def setup(bot):
