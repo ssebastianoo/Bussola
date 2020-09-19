@@ -7,7 +7,7 @@ class Servers(commands.Cog):
 
     @commands.command(aliases = ["invia"])
     @commands.has_permissions(administrator = True)
-    async def submit(self, ctx, *, descrizione):
+    async def submit(self, ctx, *, descrizione = None):
         "invia il tuo server nella lista, dovrà essere approvato da un moderatore."
 
         async with ctx.typing():
@@ -31,6 +31,11 @@ class Servers(commands.Cog):
                 emb.colour = discord.Colour.red()
                 return await ctx.send(embed = emb)
 
+            if not descrizione:
+                emb.description = "Uso errato del comando, usare `//submit descrizione del server`"
+                emb.colour = discord.Colour.red()
+                return await ctx.send(embed = emb)
+
             emb.colour = 0xffe285
             emb.set_footer(text = ctx.guild.name, icon_url = ctx.guild.icon_url)
             emb.set_image(url = 'https://www.mappadiscordit.ga/Divisorio_Moduli.png')
@@ -39,7 +44,7 @@ class Servers(commands.Cog):
             emb.title = f'**{ctx.guild.name}**\n┏╋━━◥◣◆◢◤━━╋┓'
             emb.add_field(name = '__Proprietario__', value = str(ctx.guild.owner), inline = False)
 
-            admins = [str(member) for member in ctx.guild.members if member.guild_permissions.administrator]
+            admins = [str(member) for member in ctx.guild.members if member.guild_permissions.administrator and not member.bot]
 
             emb.add_field(name = '__Amministratori__', value = "\n".join(admins), inline = False)
             emb.add_field(name = "__Data di Fondazione__", value = ctx.guild.created_at.strftime("%d %B %Y"), inline = False)
@@ -90,7 +95,7 @@ class Servers(commands.Cog):
         if payload.emoji.name == "✅":
 
             for letter in guild.name:
-                if letter not in "abcdefghijklmnopqrstuvwxyz":
+                if letter.lower() not in "abcdefghijklmnopqrstuvwxyz":
                     pass
                 else:
                     channel_name = letter
@@ -98,24 +103,6 @@ class Servers(commands.Cog):
 
             alfabetico = self.bot.get_channel(756799536286007327)
             alfabetico = discord.utils.get(alfabetico.channels, name = channel_name.lower())
-
-            if guild.member_count > 59 and guild.member_count < 100:
-                numerico = self.bot.get_channel(756802253758791690)
-
-            elif guild.member_count > 99 and guild.member_count < 200:
-                numerico = self.bot.get_channel(756802282951278644)
-
-            elif guild.member_count > 199 and guild.member_count < 500:
-                numerico = self.bot.get_channel(756802304400949378)
-
-            elif guild.member_count > 499 and guild.member_count < 1000:
-                numerico = self.bot.get_channel(756802332460843018)
-
-            elif guild.member_count > 999 and guild.member_count < 5000:
-                numerico = self.bot.get_channel(756802350932426782)
-
-            elif guild.member_count > 4999:
-                numerico = self.bot.get_channel(756802383585214504)
 
             msg = await alfabetico.send(embed = message.embeds[0])
             # await numerico.send(embed = message.embeds[0])
