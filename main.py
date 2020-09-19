@@ -12,6 +12,14 @@ bot.load_extension("jishaku")
 async def on_ready():
     print("ready as", bot.user)
 
+@bot.check
+def dm_check(ctx):
+    if not ctx.guild:
+        return False
+
+    else:
+        return True
+
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         bot.load_extension(f"cogs.{filename[:-3]}")
