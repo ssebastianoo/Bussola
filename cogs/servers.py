@@ -4,15 +4,40 @@ from discord.ext import commands
 class Servers(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+        
     @commands.command(aliases = ["invia"])
     @commands.has_permissions(administrator = True)
     async def submit(self, ctx, *, descrizione = None):
         "invia il tuo server nella lista, dovrà essere approvato da un moderatore."
 
+        emb = discord.Embed()
+
+        if not descrizione:
+                emb.description = "Uso errato del comando, usare `//submit descrizione del server`"
+                emb.colour = discord.Colour.red()
+                return await ctx.send(embed = emb)
+
+        if not ctx.guild.me.guild_permissions.create_instant_invite:
+            emb = discord.Embed(description = f"{ctx.author.mention} devo avere il permesso per creare inviti nel server!", colour = discord.Colour.red())
+            return await ctx.send(embed = emb)
+
         async with ctx.typing():
 
-            emb = discord.Embed()
+            converter = commands.TextChannelConverter()
+            descrizione = descrizione.split(" | ")
+
+            if len(descrizione) > 1:
+                try:
+                    channel_invite = await converter.convert(ctx, descrizione[1])
+
+                except:
+                    emb = discord.Embed(description = f"{ctx.author.mention} **{descrizione[1]}** non è un canale testuale valido!", colour = discord.Colour.red())
+                    return await ctx.send(embed = emb)
+
+            else:
+                channel_invite = None
+
+            descrizione = descrizione[0]
 
             if ctx.guild.member_count < 0:
                 emb.title = "Il server deve avere minimo 60 membri!"
@@ -31,11 +56,6 @@ class Servers(commands.Cog):
                 emb.colour = discord.Colour.red()
                 return await ctx.send(embed = emb)
 
-            if not descrizione:
-                emb.description = "Uso errato del comando, usare `//submit descrizione del server`"
-                emb.colour = discord.Colour.red()
-                return await ctx.send(embed = emb)
-
             emb.colour = 0xffe285
             emb.set_footer(text = ctx.guild.name, icon_url = ctx.guild.icon_url)
             emb.set_image(url = 'https://www.mappadiscordit.ga/Divisorio_Moduli.png')
@@ -45,22 +65,27 @@ class Servers(commands.Cog):
             emb.add_field(name = '__Proprietario__', value = str(ctx.guild.owner), inline = False)
 
             admins = [str(member) for member in ctx.guild.members if member.guild_permissions.administrator and not member.bot and member.id != ctx.guild.owner.id]
-
-            emb.add_field(name = '__Amministratori__', value = "\n".join(admins), inline = False)
+            
+            if len(admins) > 0:
+                emb.add_field(name = '__Amministratori__', value = "\n".join(admins), inline = False)
             emb.add_field(name = "__Data di Fondazione__", value = ctx.guild.created_at.strftime("%d %B %Y"), inline = False)
             emb.add_field(name = "__Descrizione del Server__", value = descrizione, inline = False)
 
-            if ctx.guild.system_channel:
-                invite = await ctx.guild.system_channel.create_invite()
+            if channel_invite:
+                invite = await channel_invite.create_invite()
 
             else:
-                for channel in ctx.guild.text_channels:
-                    try:
-                        invite = await channel.create_invite()
-                        break
+                if ctx.guild.system_channel:
+                    invite = await ctx.guild.system_channel.create_invite()
 
-                    except:
-                        pass
+                else:
+                    for channel in ctx.guild.text_channels:
+                        try:
+                            invite = await channel.create_invite()
+                            break
+
+                        except:
+                            pass
 
             emb.add_field(name = '__Link Server__', value = f'*Per accedere al server clicca [qui]({invite})*', inline = False)
 
@@ -118,7 +143,7 @@ class Servers(commands.Cog):
         elif payload.emoji.name == "❎":
             await message.clear_reactions()
 
-            await ch.send("Ragione?")
+            ragione = await ch.send("Ragione?")
             
             def check(m):
                 return m.channel.id == ch.id and m.author.id == payload.member.id
@@ -140,6 +165,7 @@ class Servers(commands.Cog):
 
             emb = discord.Embed(title = f"• Il tuo server **{guild.name}** è stato declinato!\n• {reason}", colour = discord.Colour.red())
             await user.send(embed = emb)
+            await ragione.edit("Server Declinato✅")
 
     @commands.command(aliases = ["pagina"])
     async def page(self, ctx):

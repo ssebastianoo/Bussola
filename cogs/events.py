@@ -11,5 +11,8 @@ class Events(commands.Cog):
             emb = discord.Embed(description = f"{ctx.author.mention} devi essere un Amministratore per usare questo comando!", colour = discord.Colour.red())
             return await ctx.send(embed = emb)
 
+        else:
+            print(error)
+
 def setup(bot):
     bot.add_cog(Events(bot))
