@@ -39,7 +39,7 @@ class Servers(commands.Cog):
 
             descrizione = descrizione[0]
 
-            if ctx.guild.member_count < 0:
+            if ctx.guild.member_count < 60:
                 emb.title = "Il server deve avere minimo 60 membri!"
                 emb.colour = discord.Colour.red()
                 return await ctx.send(embed = emb)
