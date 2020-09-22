@@ -140,6 +140,16 @@ class Servers(commands.Cog):
                 await db.execute(f"UPDATE queue set id = 0 where id = {guild.id}")
                 await db.commit()
 
+            admins = [member for member in guild.members if member.guild_permissions.administrator and not member.bot]
+            role = message.guild.get_role(758027050744545461)
+
+            for admin in admins:
+                m = message.guild.get_member(admin.id)
+                if m:
+                    await m.add_roles(role)
+                else:
+                    pass
+
         elif payload.emoji.name == "❎":
             await message.clear_reactions()
 
