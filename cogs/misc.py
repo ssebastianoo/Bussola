@@ -20,7 +20,7 @@ class Misc(commands.Cog):
     async def help(self, ctx, *, command = None):
         "lista di comandi"
 
-        emb = discord.Embed(title = "Help", description = "", colour = discord.Colour.green(), timestamp = ctx.message.created_at)
+        emb = discord.Embed(title = "Help", description = f"{self.bot.description}\n", colour = discord.Colour.green(), timestamp = ctx.message.created_at)
         emb.set_author(name = ctx.author, icon_url = str(ctx.author.avatar_url_as(static_format = "png")))
 
         for cog in self.bot.cogs:
