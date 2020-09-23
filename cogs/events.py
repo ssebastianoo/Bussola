@@ -14,5 +14,33 @@ class Events(commands.Cog):
         else:
             print(error)
 
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        channel = self.bot.get_channel(758303451699740695)
+        text = f"**{str(self.bot.user)}** è entrato in **{guild.name}**"
+        text = discord.utils.escape_mentions(text)
+        await channel.send(text)
+    
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        channel = self.bot.get_channel(758303451699740695)
+        text = f"**{str(self.bot.user)}** è uscito da **{guild.name}**"
+        text = discord.utils.escape_mentions(text)
+        await channel.send(text)
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        channel = self.bot.get_channel(758303451699740695)
+        text = f"**{str(member)}** è entrato"
+        text = discord.utils.escape_mentions(text)
+        await channel.send(text)
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        channel = self.bot.get_channel(758303451699740695)
+        text = f"**{str(member)}** è uscito"
+        text = discord.utils.escape_mentions(text)
+        await channel.send(text)
+
 def setup(bot):
     bot.add_cog(Events(bot))
