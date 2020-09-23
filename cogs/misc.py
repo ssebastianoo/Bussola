@@ -34,6 +34,26 @@ class Misc(commands.Cog):
                     emb.description += f"• `{sign}` {command.help}\n"
 
         await ctx.send(embed = emb)
+
+    @commands.command(aliases = ["informazioni"])
+    async def info(self, ctx):
+        "informazioni riguardanti il server e bussola"
+
+        content = """**Mappa Discord Italia** è un server con l'obbiettivo di listare vari server italiani con lo scopo di aiutare gli utenti di discord italia ad orientarsi ed ha trovare il server adatto a loro. 
+
+**È possibile pubblicare il proprio il server** invitando @Bussola#2822 nel vostro server tramite il link 
+
+• <https://bit.ly/bussolabot>
+
+• Usando il comando `//submit descrizione del server` in automatico il bot creerà un invito per il canale di sistema del server. 
+
+• È possibile specificare un canale per l'invito con `//submit descrizione | menzione canale`
+
+• Il server verrà approvato o declinato dai moderatori, riceverete un messaggio da Bussola per sapere l'esito.
+"""
+        embed = discord.Embed(colour = 0x2f3136, description = content) 
+
+        await ctx.send(embed = embed)
         
 def setup(bot):
     bot.add_cog(Misc(bot))
