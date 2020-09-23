@@ -22,7 +22,7 @@ class Events(commands.Cog):
         await channel.send(text)
     
     @commands.Cog.listener()
-    async def on_guild_join(self, guild):
+    async def on_guild_remove(self, guild):
         channel = self.bot.get_channel(758303451699740695)
         text = f"**{str(self.bot.user)}** è uscito da **{guild.name}**"
         text = discord.utils.escape_mentions(text)
@@ -30,6 +30,9 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
+        if member.guild.id != 606861507237773322:
+            return
+
         channel = self.bot.get_channel(758303451699740695)
         text = f"**{str(member)}** è entrato"
         text = discord.utils.escape_mentions(text)
@@ -37,6 +40,8 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
+        if member.guild.id != 606861507237773322:
+            return
         channel = self.bot.get_channel(758303451699740695)
         text = f"**{str(member)}** è uscito"
         text = discord.utils.escape_mentions(text)
