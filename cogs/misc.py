@@ -59,8 +59,8 @@ class Misc(commands.Cog):
         "statistiche del bot"
 
         space = "       "
-        emb = discord.Embed(description = f"**Server:** `{len(self.bot.guilds)}`{space}**Utenti:** `{len(self.bot.users)}`{space}**CPU:** `{psutil.cpu_percent()}%`{space}**Memory:** `{psutil.virtual_memory()[2]}%`", colour = 0xffe285)
+        emb = discord.Embed(description = f"**Server:** `{len(self.bot.guilds)}`\n**Utenti:** `{len(self.bot.users)}`\n**CPU:** `{psutil.cpu_percent()}%`\n**Memoria:** `{psutil.virtual_memory()[2]}%`", colour = 0xffe285)
         await ctx.send(embed = emb)
-        
+
 def setup(bot):
     bot.add_cog(Misc(bot))
