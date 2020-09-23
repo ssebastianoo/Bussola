@@ -1,4 +1,4 @@
-import discord
+import discord, psutil
 from discord.ext import commands
 
 class Misc(commands.Cog):
@@ -52,8 +52,15 @@ class Misc(commands.Cog):
 • Il server verrà approvato o declinato dai moderatori, riceverete un messaggio da Bussola per sapere l'esito.
 """
         embed = discord.Embed(colour = 0x2f3136, description = content) 
-
         await ctx.send(embed = embed)
+
+    @commands.command()
+    async def stats(self, ctx):
+        "statistiche del bot"
+
+        space = "       "
+        emb = discord.Embed(description = f"**Server:** `{len(self.bot.guilds)}`{space}**Utenti:** `{len(self.bot.users)}`{space}**CPU:** `{psutil.cpu_percent()}%`{space}**Memory:** `{psutil.virtual_memory()[2]}%`", colour = 0xffe285)
+        await ctx.send(embed = emb)
         
 def setup(bot):
     bot.add_cog(Misc(bot))
