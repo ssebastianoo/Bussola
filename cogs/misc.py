@@ -39,9 +39,9 @@ class Misc(commands.Cog):
     async def info(self, ctx):
         "informazioni riguardanti il server e bussola"
 
-        content = """**Mappa Discord Italia** è un server con l'obbiettivo di listare vari server italiani con lo scopo di aiutare gli utenti di discord italia ad orientarsi ed ha trovare il server adatto a loro. 
+        content = f"""**Mappa Discord Italia** è un server con l'obbiettivo di listare vari server italiani con lo scopo di aiutare gli utenti di discord italia ad orientarsi ed ha trovare il server adatto a loro. 
 
-**È possibile pubblicare il proprio il server** invitando @Bussola#2822 nel vostro server tramite il link 
+**È possibile pubblicare il proprio il server** invitando {self.bot.user.mention} nel vostro server tramite il link 
 
 • <https://bit.ly/bussolabot>
 
