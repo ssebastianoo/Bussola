@@ -5,6 +5,23 @@ class DMS(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.has_permissions(manage_messages = True)
+    @commands.command(hidden = True)
+    async def close(self, ctx, *, channel: discord.TextChannel = None):
+        "chiudi un ticket"
+        
+        channel = channel or ctx.channel
+
+        if channel.category.id == 756944434322735174:
+            user = self.bot.get_user(int(channel.topic))
+            emb = discord.Embed(description = f"Il ticket è stato chiuso da **{str(ctx.author)}**", colour = discord.Colour.red())
+            await user.send(embed = emb)
+            await ctx.send(f"Ticket **{channel.name}** chiuso:thumbup:")
+            await channel.delete()
+        
+        else:
+            await channel.send("mhh... quel canale non è un ticket!")
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.bot.user:
