@@ -54,7 +54,7 @@ class Misc(commands.Cog):
         embed = discord.Embed(colour = 0x2f3136, description = content) 
         await ctx.send(embed = embed)
 
-    @commands.command()
+    @commands.command(aliases = ["stat", "statistiche"])
     async def stats(self, ctx):
         "statistiche del bot"
 

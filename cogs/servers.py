@@ -5,7 +5,7 @@ class Servers(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
-    @commands.command(aliases = ["invia"])
+    @commands.command(aliases = ["invia"], usage = "<descrizione> | [invito]")
     @commands.has_permissions(administrator = True)
     async def submit(self, ctx, *, descrizione = None):
         "invia il tuo server nella lista, dovrà essere approvato da un moderatore."
