@@ -1,0 +1,35 @@
+body {
+    font-family: helvetica, arial, sans-serif;
+    background: #BDC581;
+}
+
+h1 {
+    text-shadow: 2px 2px 1px white;
+}
+
+p {
+    font-size: 20px;
+    text-shadow: 2px 2px 1px #BDC581;
+}
+
+.left {
+    display: block;
+    text-align: left;
+    margin-left: 50px;
+    background: #a4f542;
+    padding: 10px 100px;
+    transition-duration: .3s;
+}
+
+.right {
+    display: block;
+    text-align: right;
+    margin-right: 50px;
+    background: #89b851;
+    padding: 10px 100px;
+    transition-duration: .3s;
+}
+
+.right:hover, .left:hover {
+    padding: 10px 200px;
+}
