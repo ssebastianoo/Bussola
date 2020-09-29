@@ -211,6 +211,9 @@ class Servers(commands.Cog):
         channel = self.bot.get_channel(int(data[0][1]))
         message = await channel.fetch_message(int(data[0][2]))
 
+        if not descrizione:
+            descrizione = message.embeds[0].fields[3].value
+
         emb = discord.Embed()
 
         emb.colour = 0xffe285
