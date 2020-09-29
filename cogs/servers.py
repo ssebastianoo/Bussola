@@ -13,9 +13,9 @@ class Servers(commands.Cog):
         emb = discord.Embed()
 
         if not descrizione:
-                emb.description = "Uso errato del comando, usare `//submit descrizione del server`"
-                emb.colour = discord.Colour.red()
-                return await ctx.send(embed = emb)
+            emb.description = "Uso errato del comando, usare `//submit descrizione del server`"
+            emb.colour = discord.Colour.red()
+            return await ctx.send(embed = emb)
 
         if not ctx.guild.me.guild_permissions.create_instant_invite:
             emb = discord.Embed(description = f"{ctx.author.mention} devo avere il permesso per creare inviti nel server!", colour = discord.Colour.red())
@@ -195,7 +195,7 @@ class Servers(commands.Cog):
         emb = discord.Embed(description = f"[{ctx.guild.name}]({message.jump_url})", colour = discord.Colour.green())
         await ctx.send(embed = emb)
 
-    @commands.command(aliases = ["aggiorna"])
+    @commands.group(aliases = ["aggiorna"], invoke_without_command = True)
     @commands.has_permissions(administrator = True)
     async def update(self, ctx, *, descrizione = None):
         "aggiorna il server nella pagina"
@@ -231,6 +231,60 @@ class Servers(commands.Cog):
         emb.add_field(name = "__Data di Fondazione__", value = ctx.guild.created_at.strftime("%d %B %Y"), inline = False)
         emb.add_field(name = "__Descrizione del Server__", value = descrizione, inline = False)
         emb.add_field(name = '__Link Server__', value = message.embeds[0].fields[4].value, inline = False)
+
+        await message.edit(embed = emb)
+        emb = discord.Embed(title = "Server aggiornato con successo!", description = f"Puoi vedere il server [qui]({message.jump_url}).", colour = discord.Colour.green())
+        await ctx.send(embed = emb)
+
+    @update.command(aliases = ["invito"])
+    @commands.has_permissions(administrator = True)
+    async def invite(self, ctx, *, channel: discord.TextChannel = None):
+        "aggiorna l'invito nel server"
+
+        if not channel:
+            if ctx.guild.system_channel:
+                channel = ctx.guild.system_channel
+                invite = await channel.create_invite()
+
+            else:
+                for textchannel in ctx.guild.text_channels:
+                    try:
+                        invite = await textchannel.create_invite()
+
+                    except:
+                        pass
+
+        else:
+            invite = await channel.create_invite()
+
+        async with aiosqlite.connect("data/servers.db") as db:
+            data = await db.execute(f"select * from servers where id = {ctx.guild.id}")
+            data = await data.fetchall()
+
+        if len(data) == 0 or int(data[0][0]) == 0:
+            emb = discord.Embed(title = "Il tuo server non è in lista!", colour = discord.Colour.red())
+            return await ctx.send(embed = emb)
+
+        channel = self.bot.get_channel(int(data[0][1]))
+        message = await channel.fetch_message(int(data[0][2]))
+
+        emb = discord.Embed()
+
+        emb.colour = 0xffe285
+        emb.set_footer(text = ctx.guild.name, icon_url = ctx.guild.icon_url)
+        emb.set_image(url = 'https://www.mappadiscordit.ga/Divisorio_Moduli.png')
+        emb.set_thumbnail(url = str(ctx.guild.icon_url_as(static_format = "png")))
+
+        emb.title = f'**{ctx.guild.name}**\n┏╋━━◥◣◆◢◤━━╋┓'
+        emb.add_field(name = '__Proprietario__', value = str(ctx.guild.owner), inline = False)
+
+        admins = [str(member) for member in ctx.guild.members if member.guild_permissions.administrator and not member.bot and member.id != ctx.guild.owner.id]
+        
+        if len(admins) > 0:
+            emb.add_field(name = '__Amministratori__', value = "\n".join(admins), inline = False)
+        emb.add_field(name = "__Data di Fondazione__", value = ctx.guild.created_at.strftime("%d %B %Y"), inline = False)
+        emb.add_field(name = "__Descrizione del Server__", value = message.embeds[0].fields[3].value, inline = False)
+        emb.add_field(name = '__Link Server__', value = f'*Per accedere al server clicca [qui]({invite})*', inline = False)
 
         await message.edit(embed = emb)
         emb = discord.Embed(title = "Server aggiornato con successo!", description = f"Puoi vedere il server [qui]({message.jump_url}).", colour = discord.Colour.green())
