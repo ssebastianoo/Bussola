@@ -62,5 +62,19 @@ class Misc(commands.Cog):
         emb = discord.Embed(description = f"**Server:** `{len(self.bot.guilds)}`\n**Utenti:** `{len(self.bot.users)}`\n**CPU:** `{psutil.cpu_percent()}%`\n**Memoria:** `{psutil.virtual_memory()[2]}%`", colour = 0xffe285)
         await ctx.send(embed = emb)
 
+    @commands.command(hidden = True)
+    async def support(self, ctx):
+        "mod del server"
+
+        g = self.bot.get_guild(606861507237773322)
+        m = g.get_member(ctx.author.id)
+        r = await g.get_role(756635091928744087)
+
+        if r not in m.roles:
+            return 
+
+        emb = discord.Embed(description = f"**{str(ctx.author)}** è un moderatore del server [Mappa Discord Italia](https://discord.gg/MXjuXRF) ed è qui per revisionare il server **{ctx.guild.name}**", colour = 0x2f3136)
+        await ctx.send(embed = emb)
+        
 def setup(bot):
     bot.add_cog(Misc(bot))
