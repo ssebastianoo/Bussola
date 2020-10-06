@@ -41,7 +41,7 @@ class Servers(commands.Cog):
 
             if len(descrizione) > 1024:
                 emb = discord.Embed(description = f"**{ctx.author}** la descrizione non può superare i **1024** caratteri!", colour = discord.Colour.red())
-                    return await ctx.send(embed = emb)
+                return await ctx.send(embed = emb)
 
             if ctx.guild.member_count < 60:
                 emb.title = "Il server deve avere minimo 60 membri!"
