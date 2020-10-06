@@ -72,11 +72,26 @@ class Servers(commands.Cog):
             emb.add_field(name = "__Descrizione del Server__", value = descrizione, inline = False)
 
             if channel_invite:
-                invite = await channel_invite.create_invite()
+                try:
+                    invite = await channel_invite.create_invite()
+
+                except:
+                    emb = discord.Embed(description = f"**{ctx.author}** non è stato possibile creare un invito per quel canale, assicurati che io abbia i permessi per creare inviti in quel canale!", colour = discord.Colour.red())
+                    return await ctx.send(embed = emb)
 
             else:
                 if ctx.guild.system_channel:
-                    invite = await ctx.guild.system_channel.create_invite()
+                    try:
+                        invite = await ctx.guild.system_channel.create_invite()
+
+                    except:
+                        for channel in ctx.guild.text_channels:
+                            try:
+                                invite = await channel.create_invite()
+                                break
+
+                            except:
+                                pass
 
                 else:
                     for channel in ctx.guild.text_channels:
@@ -86,6 +101,10 @@ class Servers(commands.Cog):
 
                         except:
                             pass
+
+                if not invite:
+                    emb = discord.Embed(description = f"**{ctx.author}** non è stato possibile creare un invito per nessun canale testuale!", colour = discord.Colour.red())
+                    return await ctx.send(embed = emb)
 
             emb.add_field(name = '__Link Server__', value = f'*Per accedere al server clicca [qui]({invite})*', inline = False)
 
@@ -99,7 +118,8 @@ class Servers(commands.Cog):
             await msg.add_reaction("❎")
 
             emb = discord.Embed(title = "Il tuo server è stato messo in queue, riceverai un messaggio per sapere se è stato approvato o meno.", colour = discord.Colour.green())
-            await ctx.send(embed = emb)
+        
+        await ctx.send(embed = emb)
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
