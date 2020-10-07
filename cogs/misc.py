@@ -1,4 +1,4 @@
-import discord, psutil
+import discord, psutil, humanize
 from discord.ext import commands
 
 class Misc(commands.Cog):
@@ -83,5 +83,12 @@ class Misc(commands.Cog):
         emb = discord.Embed(description = "Accedi a [Mappa Discord Italia](https://discord.gg/MXjuXRF)", colour = 0x2f3136)
         await ctx.send(embed = emb)
 
+    @commands.command(aliases = ["guildinfo", "si", "guild"])
+    async def serverinfo(self, ctx):
+        "informazioni riguardanti il server attuale"
+
+        emb = discord.Embed(description = f"**nome:** `{ctx.guild.name}`\n**id:** `{ctx.guild.id}`\n**creato:** {ctx.guild.created_at.strftime('%d %b %Y')} ({humanize.naturaltime(ctx.guild.created_at)})\n**membri:** `{ctx.guild.member_count}`\n• **umani:** `{len([member for member in ctx.guild.members if not member.bot])}\n• **bot:** `{len([member for member in ctx.guild.members if member.bot])}`", colour = 0xffe285)
+        await ctx.send(embed = emb)
+        
 def setup(bot):
     bot.add_cog(Misc(bot))
