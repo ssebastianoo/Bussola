@@ -242,7 +242,7 @@ class Servers(commands.Cog):
 
         emb.colour = 0xffe285
         emb.set_footer(text = ctx.guild.name, icon_url = ctx.guild.icon_url)
-        emb.set_image(url = 'https://www.mappadiscordit.ga/Divisorio_Moduli.png')
+        emb.set_image(url = 'https://cdn.discordapp.com/attachments/756797849852837941/777859398470991872/Divisorio_Moduli.png')
         emb.set_thumbnail(url = str(ctx.guild.icon_url_as(static_format = "png")))
 
         emb.title = f'**{ctx.guild.name}**\n┏╋━━◥◣◆◢◤━━╋┓'
@@ -296,7 +296,7 @@ class Servers(commands.Cog):
 
         emb.colour = 0xffe285
         emb.set_footer(text = ctx.guild.name, icon_url = ctx.guild.icon_url)
-        emb.set_image(url = 'https://www.mappadiscordit.ga/Divisorio_Moduli.png')
+        emb.set_image(url = 'https://cdn.discordapp.com/attachments/756797849852837941/777859398470991872/Divisorio_Moduli.png')
         emb.set_thumbnail(url = str(ctx.guild.icon_url_as(static_format = "png")))
 
         emb.title = f'**{ctx.guild.name}**\n┏╋━━◥◣◆◢◤━━╋┓'
